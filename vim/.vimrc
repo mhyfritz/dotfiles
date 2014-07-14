@@ -1,5 +1,9 @@
 source ~/.vim/vundle.vim
 
+if filereadable(expand("~/.vim/qwerty.vim"))
+    source ~/.vim/qwerty.vim
+endif
+
 filetype plugin on 
 filetype indent on 
 
