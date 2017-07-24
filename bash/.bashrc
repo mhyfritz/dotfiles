@@ -21,6 +21,8 @@ alias ls='ls --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 
+export LS_COLORS=$LS_COLORS:'di=0;36:'
+
 alias tree='tree -F'
 
 alias calc='bc -l <<<'
