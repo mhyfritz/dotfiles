@@ -1,4 +1,6 @@
-export PS1='[\u@\h][$(date +%T)][\W]\$ '
+# prompt
+bash_prompt_file="$HOME/etc/bash_prompt.bash"
+[ -f "$bash_prompt_file" ] && . "$bash_prompt_file"
 
 shopt -s globstar
 shopt -o -s ignoreeof
