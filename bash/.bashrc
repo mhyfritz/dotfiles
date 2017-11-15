@@ -1,4 +1,4 @@
-export PS1='[\u@\h][$(date +%T)][\W]\$ '
+export PS1='[\u@\h][\W]\$ '
 
 shopt -s globstar
 shopt -o -s ignoreeof
