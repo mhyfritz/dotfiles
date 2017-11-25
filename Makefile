@@ -1,4 +1,4 @@
-TARGETS= vim bash ghci
+TARGETS= vim bash
 .PHONY: all $(TARGETS)
 
 all: $(TARGETS)

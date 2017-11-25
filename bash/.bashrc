@@ -16,9 +16,9 @@ alias du='du -h'
 alias free='free -h'
 
 alias grep='grep --color=auto'
-alias ls='ls --color=auto'
+alias ls='ls --color=auto -F'
 
-alias ll='ls -alF'
+alias ll='ls -al'
 alias la='ls -A'
 
 alias tree='tree -F'
