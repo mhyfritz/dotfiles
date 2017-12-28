@@ -25,5 +25,15 @@ alias tree='tree -F'
 
 alias calc='bc -l <<<'
 
+DIR_GITHUB="$HOME/repos/github.com/mhyfritz"
+if [ -d "$DIR_GITHUB" ]; then
+    alias cdgh='cd $DIR_GITHUB'
+fi
+
+DIR_GITLAB="$HOME/repos/gitlab.com/mhyfritz"
+if [ -d "$DIR_GITLAB" ]; then
+    alias cdgl='cd $DIR_GITLAB'
+fi
+
 bashrc_local="$HOME/etc/bash.bashrc"
 [ -f "$bashrc_local" ] && . "$bashrc_local"
