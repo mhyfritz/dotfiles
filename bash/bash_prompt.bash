@@ -1,26 +1,9 @@
-#
-# Clean and minimalistic Bash prompt
-# Author: Artem Sapegin, sapegin.me
-# 
-# Inspired by: https://github.com/sindresorhus/pure & https://github.com/dreadatour/dotfiles/blob/master/.bash_profile
-#
-# Notes:
-# - $local_username - username you don’t want to see in the prompt - can be defined in ~/.bashlocal : `local_username="admin"`
-# - Colors ($RED, $GREEN) - defined in ../tilde/bash_profile.bash
-#
+# Original author: Artem Sapegin, sapegin.me 
 
-
-# User color
-case $(id -u) in
-	0) user_color="$RED" ;;  # root
-	*) user_color="$GREEN" ;;
-esac
-
-# Symbols
-prompt_symbol="❯"
+prompt_symbol="└─"
 prompt_clean_symbol="☀ "
 prompt_dirty_symbol="☂ "
-prompt_venv_symbol="☁ "
+prompt_venv_symbol="⚔ "
 
 function prompt_command() {
 	# Local or SSH session?
@@ -34,7 +17,7 @@ function prompt_command() {
 		local branch="$(git symbolic-ref HEAD 2>/dev/null)"
 		branch="${branch##refs/heads/}"
 
-		# Working tree status (red when dirty)
+		# Working tree status
 		local dirty=
 		# Modified files
 		git diff --no-ext-diff --quiet --exit-code --ignore-submodules 2>/dev/null || dirty=1
@@ -43,39 +26,30 @@ function prompt_command() {
 
 		# Format Git info
 		if [ -n "$dirty" ]; then
-			git_prompt=" $RED$prompt_dirty_symbol$branch$NOCOLOR"
+			git_prompt=" $prompt_dirty_symbol$branch"
 		else
-			git_prompt=" $GREEN$prompt_clean_symbol$branch$NOCOLOR"
+			git_prompt=" $prompt_clean_symbol$branch"
 		fi
 	fi
 
 	# Virtualenv
 	local venv_prompt=
 	if [ -n "$VIRTUAL_ENV" ]; then
-	    venv_prompt=" $BLUE$prompt_venv_symbol$(basename $VIRTUAL_ENV)$NOCOLOR"
+	    venv_prompt=" prompt_venv_symbol$(basename $VIRTUAL_ENV)"
 	fi
 
-	# Only show username if not default
-	local user_prompt=
-	[ "$USER" != "$local_username" ] && user_prompt="$user_color$USER$NOCOLOR"
-
-	# Show hostname inside SSH session
+	local user_prompt="$USER"
 	local host_prompt=
-	[ -n "$remote" ] && host_prompt="@$YELLOW$HOSTNAME$NOCOLOR"
-
-	# Show delimiter if user or host visible
-	local login_delimiter=
-	[ -n "$user_prompt" ] || [ -n "$host_prompt" ] && login_delimiter=":"
+  [ -n "$remote" ] && host_prompt="@$HOSTNAME"
+	local login_delimiter=":"
 
 	# Format prompt
-	first_line="$user_prompt$host_prompt$login_delimiter$WHITE\w$NOCOLOR$git_prompt$venv_prompt"
-	# Text (commands) inside \[...\] does not impact line length calculation which fixes stange bug when looking through the history
-	# $? is a status of last command, should be processed every time prompt prints
-	second_line="\`if [ \$? = 0 ]; then echo \[\$CYAN\]; else echo \[\$RED\]; fi\`\$prompt_symbol\[\$NOCOLOR\] "
+	first_line="$user_prompt$host_prompt$login_delimiter\w$git_prompt$venv_prompt"
+	second_line="$prompt_symbol "
 	PS1="\n$first_line\n$second_line"
 
 	# Multiline command
-	PS2="\[$CYAN\]$prompt_symbol\[$NOCOLOR\] "
+	PS2="$prompt_symbol "
 
 	# Terminal title
 	local title="$(basename "$PWD")"
@@ -83,5 +57,5 @@ function prompt_command() {
 	echo -ne "\033]0;$title"; echo -ne "\007"
 }
 
-# Show awesome prompt only if Git is istalled
+# Show prompt only if Git is istalled
 command -v git >/dev/null 2>&1 && PROMPT_COMMAND=prompt_command
